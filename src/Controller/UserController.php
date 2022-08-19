@@ -96,4 +96,15 @@ class UserController extends AbstractController
             ], 400);
         }
     }
+    /**
+     * @Route("/user/delete/{id}", name="app_user_delete", methods={"POST"})
+     */
+    public function delete($id, UserRepository $userRepository, EntityManagerInterface $em)
+    {
+        $user = $userRepository->find($id);
+        $em->remove($user);
+        $em->flush();
+        $response = $this->json($user, 200, []);
+        return $response;
+    }
 }
