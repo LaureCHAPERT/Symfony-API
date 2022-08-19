@@ -68,4 +68,32 @@ class UserController extends AbstractController
             ], 400);
         }
     }
+    /**
+     * @Route("/user/update/{id}", name="app_user_update", methods={"PUT"})
+     */
+    public function update(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, User $user)
+    {
+        // Data recovery (Repository)
+        $json = $request->getContent();
+
+        try {
+            //OBJECT_TO_POPULATE injecte le nouveau $json dans le $user
+            $serializer->deserialize($json, User::class, JsonEncoder::FORMAT, [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
+
+            $errors = $validator->validate($user);
+            if (count($errors) > 0) {
+                return $this->json($errors, 400);
+            }
+            // $userStdObj = json_decode($json);
+            $entityManager = $doctrine->getManager();
+            $entityManager->flush();
+
+            return $this->json($user, 201, []);
+        } catch (NotEncodableValueException $e) {
+            return $this->json([
+                'status' => 400,
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
 }
