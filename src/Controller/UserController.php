@@ -43,4 +43,29 @@ class UserController extends AbstractController
         $response = $this->json($user, 200, []);
         return $response;
     }
+    /**
+     * @Route("/user/create", name="app_user_create", methods={"POST"})
+     */
+    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, ValidatorInterface $validator)
+    {
+        $json = $request->getContent();
+
+        try {
+            $user = $serializer->deserialize($json, User::class, 'json');
+
+            $errors = $validator->validate($user);
+            if (count($errors) > 0) {
+                return $this->json($errors, 400);
+            }
+            $em->persist($user);
+            $em->flush();
+
+            return $this->json($user, 201, []);
+        } catch (NotEncodableValueException $e) {
+            return $this->json([
+                'status' => 400,
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
 }
