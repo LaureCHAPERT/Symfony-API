@@ -7,7 +7,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use App\Entity\User;
-use DateTimeImmutable;
 use Faker\Generator;
 
 class AppFixtures extends Fixture
@@ -70,7 +69,6 @@ class AppFixtures extends Fixture
             $user->setRoles([$users[$u]['role']]);
             $hashedPassword = $this->hasher->hashPassword($user, $users[$u]['password']);
             $user->setPassword($hashedPassword);
-            $user->setCreatedAt(new DateTimeImmutable());
             $userObjects[] = $user;
             $manager->persist($user);
         }
