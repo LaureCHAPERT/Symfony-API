@@ -74,7 +74,7 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user/update/{id}", name="app_user_update", methods={"PUT"})
      */
-    public function update(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, User $user)
+    public function update(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, User $user, UserPasswordHasherInterface $userHasher)
     {
         // Data recovery (Repository)
         $json = $request->getContent();
@@ -88,6 +88,8 @@ class UserController extends AbstractController
                 return $this->json($errors, 400);
             }
             // $userStdObj = json_decode($json);
+            $hashedPassword = $userHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
             $entityManager = $doctrine->getManager();
             $entityManager->flush();
 
