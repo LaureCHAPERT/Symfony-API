@@ -22,7 +22,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/user", name="app_user_list", methods={"GET"})
+     * @Route("/api/user", name="app_user_list", methods={"GET"})
      */
     public function list(UserRepository $userRepository): Response
     {
@@ -33,7 +33,7 @@ class UserController extends AbstractController
         return $response;
     }
     /**
-     * @Route("/user/{id}", name="app_user_list", methods={"GET"})
+     * @Route("/api/user/{id}", name="app_user_id", methods={"GET"})
      */
     public function user(UserRepository $userRepository, $id): Response
     {
@@ -44,7 +44,7 @@ class UserController extends AbstractController
         return $response;
     }
     /**
-     * @Route("/user/create", name="app_user_create", methods={"POST"})
+     * @Route("/api/user/create", name="app_user_create", methods={"POST"})
      */
     public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, ValidatorInterface $validator)
     {
@@ -69,7 +69,7 @@ class UserController extends AbstractController
         }
     }
     /**
-     * @Route("/user/update/{id}", name="app_user_update", methods={"PUT"})
+     * @Route("/api/user/update/{id}", name="app_user_update", methods={"PUT"})
      */
     public function update(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, User $user)
     {
@@ -97,7 +97,7 @@ class UserController extends AbstractController
         }
     }
     /**
-     * @Route("/user/delete/{id}", name="app_user_delete", methods={"POST"})
+     * @Route("/api/user/delete/{id}", name="app_user_delete", methods={"POST"})
      */
     public function delete($id, UserRepository $userRepository, EntityManagerInterface $em)
     {

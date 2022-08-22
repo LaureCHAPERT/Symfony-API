@@ -57,6 +57,18 @@ class AppFixtures extends Fixture
                     'telephone' => '0685741954',
                     'role' => 'ROLE_USER',
                 ],
+                [
+
+                    'password' => 'laure.C84*',
+                    'telephone' => '0485976524',
+                    'role' => 'ROLE_USER',
+                ],
+                [
+
+                    'password' => 'elise.P84*',
+                    'telephone' => '0685741954',
+                    'role' => 'ROLE_USER',
+                ],
             ];
 
         $userObjects = [];
