@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use PhpParser\JsonDecoder;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -46,7 +47,7 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user/create", name="app_user_create", methods={"POST"})
      */
-    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, ValidatorInterface $validator)
+    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, ValidatorInterface $validator, UserPasswordHasherInterface $userHasher)
     {
         $json = $request->getContent();
 
@@ -57,6 +58,8 @@ class UserController extends AbstractController
             if (count($errors) > 0) {
                 return $this->json($errors, 400);
             }
+            $hashedPassword = $userHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
             $em->persist($user);
             $em->flush();
 
