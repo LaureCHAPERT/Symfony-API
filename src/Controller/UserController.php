@@ -112,4 +112,16 @@ class UserController extends AbstractController
         $response = $this->json($user, 200, []);
         return $response;
     }
+    /**
+     * Login
+     * 
+     * @Route("/api/login", name="api_user_login", methods={"POST"})
+     */
+    public function login()
+    {
+
+        return $this->json([
+            'user' => $this->getUser()
+        ]);
+    }
 }
