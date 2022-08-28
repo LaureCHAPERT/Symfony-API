@@ -3,7 +3,11 @@ security:
   encoders:
     App\Entity\User:
       algorithm: auto
-
+  enable_authenticator_manager:
+    true
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
   providers:
     app_user_provider:
       entity:
@@ -30,11 +34,10 @@ security:
         authenticators:
           - lexik_jwt_authentication.jwt_token_authenticator
     main:
-      anonymous: lazy
+      lazy: true
       provider: app_user_provider
 
   access_control:
-    - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allows accessing the Swagger UI
     - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY }
 
